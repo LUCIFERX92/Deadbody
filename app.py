@@ -1,3 +1,6 @@
+# app.py
+
+import gradio as gr
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 
 # Initialize the text generation pipeline with trust_remote_code=True
@@ -12,13 +15,12 @@ def generate_responses(email_content):
     
     return response_1, response_2, response_3
 
-# Input the email content
-email_content = input("Enter the email content: ")
+# Create the Gradio Interface
+iface = gr.Interface(
+    fn=generate_responses, 
+    inputs=gr.inputs.Textbox(lines=10, placeholder="Enter the email content here..."), 
+    outputs=["text", "text", "text"]
+)
 
-# Get the responses
-responses = generate_responses(email_content)
-
-# Print the responses
-print("\nGenerated Responses:")
-for i, response in enumerate(responses, 1):
-    print(f"\nResponse {i}: {response}")
+# Launch the Interface
+iface.launch()
